@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: pnw_user
+      POSTGRES_PASSWORD: pnw_password
+      POSTGRES_DB: pnw_reset_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://pnw_user:pnw_password@postgres:5432/pnw_reset_tracker
+      NODE_ENV: development
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:3000/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+  discord-bot:
+    build: ./discord-bot
+    environment:
+      DATABASE_URL: postgresql://pnw_user:pnw_password@postgres:5432/pnw_reset_tracker
+      NODE_ENV: development
+    depends_on:
+      - postgres
+    volumes:
+      - ./discord-bot:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:

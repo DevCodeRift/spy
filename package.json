@@ -1,0 +1,41 @@
+{
+  "name": "pnw-reset-tracker",
+  "version": "1.0.0",
+  "description": "Politics and War Nation Reset Time Tracker",
+  "private": true,
+  "scripts": {
+    "install:all": "npm run install:backend && npm run install:frontend && npm run install:discord",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:discord": "cd discord-bot && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:discord": "cd discord-bot && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm run preview",
+    "start:discord": "cd discord-bot && npm start",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "db:init": "psql $DATABASE_URL < backend/src/database/schema.sql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/pnw-reset-tracker.git"
+  },
+  "keywords": [
+    "politics-and-war",
+    "pnw",
+    "reset-tracker",
+    "espionage",
+    "discord-bot",
+    "react",
+    "nodejs"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
