@@ -7,6 +7,7 @@ const routes = require('./api/routes');
 const NationScanner = require('./services/scanner');
 const logger = require('./utils/logger');
 const db = require('./database/connection');
+const { runMigrations } = require('./database/migrations');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -54,6 +55,9 @@ async function start() {
         // Test database connection
         await db.query('SELECT NOW()');
         logger.info('Database connected successfully');
+
+        // Run database migrations
+        await runMigrations();
 
         // Initialize nations if needed
         const nationCount = await db.query('SELECT COUNT(*) FROM nations');
