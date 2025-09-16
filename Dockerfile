@@ -8,7 +8,10 @@ COPY frontend/package*.json ./frontend/
 COPY discord-bot/package*.json ./discord-bot/
 COPY package.json ./
 
-# Install all dependencies
+# Install root dependencies first
+RUN npm install
+
+# Install all service dependencies
 RUN cd backend && npm install --only=production
 RUN cd frontend && npm install
 RUN cd discord-bot && npm install --only=production
@@ -25,12 +28,5 @@ RUN mkdir -p backend/logs
 # Expose port for backend
 EXPOSE 3000
 
-# Create startup script
-RUN echo '#!/bin/sh' > start.sh && \
-    echo 'cd /app/backend && node src/index.js &' >> start.sh && \
-    echo 'cd /app/discord-bot && node src/bot.js &' >> start.sh && \
-    echo 'cd /app/frontend && npm run preview &' >> start.sh && \
-    echo 'wait' >> start.sh && \
-    chmod +x start.sh
-
-CMD ["./start.sh"]
+# Use the npm start script which handles concurrency properly
+CMD ["npm", "start"]
