@@ -9,9 +9,9 @@ COPY discord-bot/package*.json ./discord-bot/
 COPY package.json ./
 
 # Install all dependencies
-RUN cd backend && npm ci --only=production
-RUN cd frontend && npm ci
-RUN cd discord-bot && npm ci --only=production
+RUN cd backend && npm install --only=production
+RUN cd frontend && npm install
+RUN cd discord-bot && npm install --only=production
 
 # Copy all source code
 COPY . .
